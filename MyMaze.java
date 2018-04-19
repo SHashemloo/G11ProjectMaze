@@ -9,12 +9,13 @@ import java.util.Scanner;
 public class MyMaze {
 
     private char[][] mapText;
-    private String [] newMazFile = new String[100];
+    String [] newMazFile = new String[100];
     private int[][] trapsAndLocations = new int[2][100];
-    private int round, trapCount, tStep = 0;
-    private int trapCounter = 1;
-    private int stepsTaken = 1;
-    private int rowStart = 1, colStart = 1;
+    private int round, tStep = 0;
+    int trapCounter= 1;
+    int trapCount = 0;
+    int stepsTaken = 1;
+    int rowStart = 1, colStart = 1;
     private int rows, cols;
     private String outputFilename;
     private String inputFilename;
@@ -38,12 +39,12 @@ public class MyMaze {
                 currentLine = myFileScanner.nextLine();
                 System.out.println("currentline at " + linecounter + " is " +  currentLine);
                 mapText[linecounter] = currentLine.toCharArray();
-                for (int i = 0; i < mapSide; i++) {
+                /* for (int i = 0; i < mapSide; i++) {
                     System.out.println("mapText at " + linecounter + " and " + i + " is " +  mapText[linecounter][i]);
-                }
+                } */
                 linecounter++;
             }
-            System.out.print("Done filling the Array \n");
+            System.out.print("Done filling the Array \n total of " + this.trapCount + " traps ");
             // make sure our array is correct;
             for (int i = 0; i < mapSide; i++) {
                 for (int j = 0; j < mapSide; j++) {
@@ -58,22 +59,23 @@ public class MyMaze {
                 }
                 System.out.print("\n");
             }
+
             System.out.println("found total of " + this.trapCount + " traps ");
             System.out.println("trapCounter is " + this.trapCounter + " before the loop ");
             for (int i = 0; i++ < this.trapCount;) {
                 System.out.println("writing the input file #" + i + "!! ");
                 System.out.println("trapCounter is " + this.trapCounter + "!! ");
                 this.newMazFile[i] = createInputFile(i);
-                this.trapCounter++;
+                // this.trapCounter++;
             }
             System.out.println("total trapCount is " + this.trapCount + ":) ");
             for (int i = 0; i++ < this.trapCount;) {
                 System.out.println("file name #" + i + " is " + this.newMazFile[i]);
             }
-            for (int i = 0; i++ < this.trapCount;) {
+            /* for (int i = 0; i++ < this.trapCount;) {
                 this.stepsTaken = 1;
                 solve(this.newMazFile[i], this.rowStart, this.colStart);
-            }
+            } */
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -127,7 +129,7 @@ public class MyMaze {
     //mark the path in the maze via symbol 'S'
     //if x = < 0, or y < 0 or x or y > mapSide (out of bounds) return false
 
-    private boolean solve(String mazeName, int row, int col) {
+    boolean solve(String mazeName, int row, int col) {
 
         char right = this.mapText[row][col + 1];
         char left = this.mapText[row][col - 1];
