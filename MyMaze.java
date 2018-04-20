@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 
-public class MyMaze {
+public class MyMaze { // main Class to define and run the maze
 
     private char[][] mapText;
     char workingnMap[][];
@@ -24,9 +24,9 @@ public class MyMaze {
     String outputFilename;
     String inputFilename;
 
-    public MyMaze (String filename) throws IOException {
+    public MyMaze (String filename) throws IOException { // main initiator of the class
         try {
-            this.outputFilename = filename + ".solved";
+            this.outputFilename = filename + ".solved"; 
             this.inputFilename = filename;
             File map = new java.io.File(filename);
             Scanner myFileScanner = new Scanner(map);
@@ -43,7 +43,7 @@ public class MyMaze {
 
             // fill the internal 2d array with the original file
 
-            while (myFileScanner.hasNextLine()) {
+            while (myFileScanner.hasNextLine()) { // read each line of the input maze file and build the char[][] 
                 currentLine = myFileScanner.nextLine();
                 mapText[linecounter] = currentLine.toCharArray();
                 solution[linecounter] = currentLine.toCharArray();
@@ -71,15 +71,15 @@ public class MyMaze {
             System.out.println("found total of " + this.trapCount + " traps ");
             System.out.println("trapCounter is " + this.trapCounter + " before the loop ");
         
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException e) { 
+            e.printStackTrace();  // What went wrong exactly step by step from errors stacked up
             System.out.println("ERROR : " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("ERROR : " + e.getMessage());
         }
     }
-    private String createInputFile(int trapIndex) throws Exception {
+    private String createInputFile(int trapIndex) throws Exception { // unused - originally for recreating input files without trap
 
         String filename = this.inputFilename + '_' + trapIndex;
         int tCounter = 0;
@@ -123,8 +123,10 @@ public class MyMaze {
     //x is column, y is row
     //mark the path in the maze via symbol 'S'
     //if x = < 0, or y < 0 or x or y > mapSide (out of bounds) return false
-
-    char [][] fillWorkingMap (int mapSide, String filename) {
+        
+    
+    // not used originally temp map for looping maze trace through each trap
+    char [][] fillWorkingMap (int mapSide, String filename) { 
         try {
             File map = new java.io.File(filename);
             Scanner myFileScanner = new Scanner(map);
@@ -155,6 +157,8 @@ public class MyMaze {
         return workingnMap;
     }
 
+    // recursive function to solve 
+    // starting from the first walkable cell
     boolean solve(String mazeName, int row, int col) {
 
         char right = this.mapText[row][col + 1];
@@ -162,10 +166,14 @@ public class MyMaze {
         char up = this.mapText[row - 1][col];
         char down = this.mapText[row + 1][col];
         String outMaze = new String();
+        
+        // solution temp file to loop by replacing each trap 
         String solutionFile = new String();
+        
+        // final Solution file after trap is marked
+ 
         solutionFile =  "solution.txt";
-        // File fileSol;
-        // PrintWriter writerSol;
+        
         outMaze = mazeName + ".out";
         // System.out.print("Solving for " + mazeName + " starting from " + row + " and " + col + " writing in " +
         //             outMaze +  "\n");
@@ -218,16 +226,22 @@ public class MyMaze {
         }
 
         boolean solved = false;
+        
 
+        // try the right cell
         if ((right == 'P' || right == ' ') && !solved) {
             solved = solve(mazeName, row, col + 1);
-        }
+        } 
+        
+        //try the down cell
         if ((down == ' ' || down == 'P') && !solved) {
             solved = solve(mazeName, row + 1, col);
         }
+        // try the left cell
         if ((left == ' ' || left == 'P') && !solved) {
             solved = solve(mazeName, row, col - 1);
         }
+        // try the up cell
         if ((up == ' ' || up == 'P') && !solved) {
             solved = solve(mazeName, row - 1, col);
         }
